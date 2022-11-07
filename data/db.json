@@ -1,0 +1,19 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "title": "play sudoku",
+      "isFav": true
+    },
+    {
+      "id": 2,
+      "title": "run 24/7",
+      "isFav": false
+    },
+    {
+      "title": "hey",
+      "isFav": true,
+      "id": 1667834954351
+    }
+  ]
+}

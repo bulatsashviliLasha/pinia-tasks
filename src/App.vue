@@ -1,47 +1,57 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
   <main>
-    <TheWelcome />
+    <header>
+      <img src="./assets/pinia-logo.svg" alt="pinia logo">
+      <h1>Pinia tasks</h1>
+    </header>
+
+    <div class="new-task-form">
+      <TaskFrom/>
+    </div>
+
+    <nav class="filter">
+      <button :style="filter == 'all' && 'background: #ffd859'" @click="filter = 'all'">All tasks</button>
+      <button :style="filter == 'favs' && 'background: #ffd859'" @click="filter = 'favs'">Fav tasks</button>
+    </nav>
+
+    <div class="loading" v-if="loading">Loading tasks...</div>
+
+    <div class="task-list" v-if="filter === 'all'">
+      <p>You have {{ totalCount }} tasks left to do</p>
+      <div :key="task.id" v-for="task in tasks">
+        <TaskDetails :task="task"/>
+      </div>
+    </div>
+
+    <div class="task-list" v-if="filter === 'favs'">
+      <p>You have {{ favCount }} tasks left to do</p>
+      <div :key="task.id" v-for="task in favs">
+        <TaskDetails :task="task"/>
+      </div>
+    </div>
+
+    <div style="display: flex; justify-content: center">
+      <button @click="taskStore.$reset">Reset state</button>
+    </div>
+
   </main>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-}
+<script setup>
+import TaskDetails from "./components/TaskDetails.vue"
+import TaskFrom from "@/components/TaskFrom.vue";
+import { ref } from "vue";
+import { useTaskStore } from "@/store/taskStore";
+import { storeToRefs } from "pinia"
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
+const taskStore = useTaskStore();
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
+const { tasks, loading, favs, totalCount, favCount } = storeToRefs(taskStore)
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
-</style>
+taskStore.getTasks();
+
+const filter = ref("all");
+
+</script>
+

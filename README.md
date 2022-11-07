@@ -6,6 +6,7 @@ This template should help get you started developing with Vue 3 in Vite.
 
 ```sh
 npm install
+json-server -w ./data/db.json 
 ```
 
 ### Compile and Hot-Reload for Development
@@ -20,8 +21,3 @@ npm run dev
 npm run build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
